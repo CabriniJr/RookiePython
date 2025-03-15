@@ -1,47 +1,53 @@
-
+import os 
+rodando = True
 conjuntos = []
-
-num_conj = int(input("Quantos conjuntos tem na operação?(MAX 2 por enquanto)"))
-
+alfabeto = ["A","B","C","D","E","F","G","H","I","J"]
+os.system("clear")
+print("\n\n---------Calculadora de conjuntos----------")
+num_conj = int(input("Quantos conjuntos tem na operação?"))
 # Função que cria os conjuntos
-def criar_conjunto():
-    print("\n---Quantos elementos tem o conjunto:")
-    x = int(input())
+def criar_conjunto(x,ind):
     conjunto =[]
     for i in range(x):
         print("Valor do elemento ",i+1) 
         num = int(input()) 
         conjunto.append(num) 
-        print(conjunto) 
+        print(conjunto)
+    print("\n\n%c = "%alfabeto[ind],conjunto)
     return conjunto
 
-def mem_print():
-    conjuntos.append(resultado)
-    print(conjuntos,resultado)
-
 # Método "main"
-
 for i in range(num_conj):
-    conjunto = criar_conjunto() 
+    print("\n---Quantos elementos tem o conjunto %c?"%alfabeto[i])
+    x = int(input())
+    conjunto = criar_conjunto(x,i) 
     conjunto.sort()
     conjuntos.append(conjunto)
 print(conjuntos)
 
-print("\n\n---Para a operação escolhida, digite o nome ao lado---")
-print("UNI (união)- Ex. A = [1,2,3]; B = [3,4,5] ==> AUB = [1,2,3,4,5]")
-print("INT (interseçao)- Ex. A = [1,3]; B = [1,2] ==> AintB = [1]")
-print("DIF (diferença)- Ex. A = [1,2]; B = [1,3]==>A-B = [2]")
-operacao = str(input("\n\nQual operação você deseja?"))  
-match operacao:
-    case "UNI":
-        resultado = list(set(conjuntos[0]).union(set(conjuntos[1])))
-        mem_print()
-    case "INT":
-        resultado =list(set(conjuntos[0]) & set(conjuntos[1]))
-        mem_print()
-    case "DIF": 
-        resultado = list(set(conjuntos[0]) - set(conjuntos[1]))
-        mem_print()
-    case _:
-        print("Digite uma operação válida")
-print("\n\nResultado = ",conjuntos[2])
+def op():
+    escrita = str(input("\n------DIGITE A OPERAÇÃO------\nOperadores:\nU = União\ni = Interseção\n- = Subtração\nExemplo: ABU ==> União de A e B\n--> "))
+    os.system("clear")
+    resultado =[]
+    indice_conjunto = []
+    operacaoescrita = []
+    operacaoescrita = list(escrita)
+    for i in range(len(operacaoescrita)):
+        if operacaoescrita[i] in alfabeto:
+            indice_conjunto.append(alfabeto.index(operacaoescrita[i]))
+        else:
+            match operacaoescrita[i]:
+                case "U":
+                    resultado = list(set(conjuntos[indice_conjunto[0]]) | set(conjuntos[indice_conjunto[1]])) 
+                case "i":
+                    resultado = list(set(conjuntos[indice_conjunto[0]]) & set(conjuntos[indice_conjunto[1]]))
+                case "-":
+                    resultado = list(set(conjuntos[indice_conjunto[0]]) - set(conjuntos[indice_conjunto[1]]))
+    conjuntos.append(resultado)
+    #print(indice_conjunto,operacaoescrita,resultado)
+    indice_conjunto.clear()
+    print("\n----Conjuntos----")
+    for i in range(len(conjuntos)):
+        print(alfabeto[i],"=",conjuntos[i])
+while rodando:
+    op()
